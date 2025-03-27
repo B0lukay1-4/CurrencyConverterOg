@@ -185,8 +185,17 @@ class _SupportedPageState extends State<SupportedPage> {
   mainAxisAlignment: MainAxisAlignment.spaceBetween,
   children: [
     Text(details['name'] ?? "Unknown", style: const TextStyle(fontWeight: FontWeight.bold)),
-    Text("${currency.abbreviation}  ${details['symbol']}${currency.rate}",
-        style: const TextStyle(fontWeight: FontWeight.bold)),
+    Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Column(
+        children: [
+          Text("  ${details['symbol']} ${currency.rate}  ",
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+              
+              Text(currency.abbreviation, style: TextStyle(color:Colors.grey),)
+        ],
+      ),
+    ),
   ],
                           )
                           )
