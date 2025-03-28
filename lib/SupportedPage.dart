@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'currency_conversion_rate.dart';
-
+import 'currency_details.dart';
 class SupportedPage extends StatefulWidget {
   final String searchQuery;
 
@@ -21,14 +21,7 @@ class _SupportedPageState extends State<SupportedPage> {
   bool isLoading = true;
   bool hasError = false;
 
-  final Map<String, Map<String, String>> currencyDetails = {
-    "USD": {"name": "US Dollar", "symbol": "\$"},
-    "EUR": {"name": "Euro", "symbol": "€"},
-    "GBP": {"name": "British Pound", "symbol": "£"},
-    "JPY": {"name": "Japanese Yen", "symbol": "¥"},
-    "AUD": {"name": "Australian Dollar", "symbol": "A\$"},
-    "CHF": {"name": "Swiss Franc", "symbol": "CHF"},
-  };
+  
 
   final List<String> selectedCurrencies = ["USD", "EUR", "GBP", "JPY", "AUD", "CHF"];
 
@@ -104,13 +97,17 @@ class _SupportedPageState extends State<SupportedPage> {
     setState(() => isLoading = false);
   }
 
+
   void _filterCurrencies() {
     String query = widget.searchQuery.toLowerCase();
     setState(() {
       filteredCurrencies = query.isEmpty
           ? List.from(supportedCurrencies)
-          : supportedCurrencies.where((currency) =>
-              currency.abbreviation.toLowerCase().contains(query)).toList();
+          : supportedCurrencies.where((currency) {
+              String abbreviation = currency.abbreviation.toLowerCase();
+              String name = currency_details[currency.abbreviation]?["name"]?.toLowerCase() ?? "";
+              return abbreviation.contains(query) || name.contains(query);
+            }).toList();
     });
   }
 
@@ -170,37 +167,72 @@ class _SupportedPageState extends State<SupportedPage> {
                     itemCount: filteredCurrencies.length,
                     itemBuilder: (context, index) {
                       final currency = filteredCurrencies[index];
-                      final details = currencyDetails[currency.abbreviation] ?? {"name": "Unknown", "symbol": ""};
+                      final details = currency_details[currency.abbreviation] ?? {"name": "Unknown", "symbol": ""};
 
-                      return Card(
-                        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                        color: const Color.fromARGB(255, 255, 255, 255),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 3,
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.all(16.0),
-                          title: Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    Text(details['name'] ?? "Unknown", style: const TextStyle(fontWeight: FontWeight.bold)),
-    Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: Column(
-        children: [
-          Text("  ${details['symbol']} ${currency.rate}  ",
-              style: const TextStyle(fontWeight: FontWeight.bold)),
-              
-              Text(currency.abbreviation, style: TextStyle(color:Colors.grey),)
-        ],
-      ),
+                   return Card(
+  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+  color: const Color.fromARGB(255, 255, 255, 255),
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(12),
+  ),
+  elevation: 3,
+  child: Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        // Left section: Flag + Currency name
+        Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: Image.network(
+                currency_details[currency.abbreviation]?["image"] ?? '',
+                width: 40,
+                height: 30,
+                fit: BoxFit.contain, // keeps aspect ratio
+                errorBuilder: (context, error, stackTrace) {
+                  return const Icon(Icons.money, size: 30, color: Colors.grey);
+                },
+              ),
+            ),
+            const SizedBox(width: 12),
+            Text(
+              details['name'] ?? "Unknown",
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
+
+        // Right section: Symbol + Rate + Abbreviation
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              '${details['symbol'] ?? ''} ${currency.rate.toStringAsFixed(2)}',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              currency.abbreviation,
+              style: const TextStyle(
+                color: Colors.grey,
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
+      ],
     ),
-  ],
-                          )
-                          )
+  ),
+);
 
-                      );
                     },
                   ),
           ),
