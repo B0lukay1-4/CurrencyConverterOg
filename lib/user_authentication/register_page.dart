@@ -1,3 +1,4 @@
+// File: lib/user_authentication/register_page.dart
 import 'package:currency_converter/components/simple_button.dart';
 import 'package:currency_converter/components/simple_textfield.dart';
 import 'package:currency_converter/user_authentication/helper/helper_function.dart';
@@ -72,9 +73,11 @@ class _RegisterPageState extends State<RegisterPage> {
       // Update display name with username
       await userCredential.user!.updateDisplayName(username);
 
-      // Close loading dialog if still mounted
-      if (mounted) Navigator.pop(context);
-      // StreamBuilder elsewhere (e.g., in main.dart) will handle navigation
+      // Close loading dialog and pop back to HomePage if still mounted
+      if (mounted) {
+        Navigator.pop(context); // Close loading dialog
+        Navigator.pop(context); // Return to HomePage
+      }
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context); // Close loading dialog
       String errorMessage;
@@ -146,7 +149,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   hintText: 'Password',
                   obscureText: _obscurePassword,
                   controller: _passwordController,
-                  // Add suffix icon for visibility toggle
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscurePassword
@@ -165,7 +167,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   hintText: 'Confirm Password',
                   obscureText: _obscureConfirmPassword,
                   controller: _confirmPwController,
-                  // Add suffix icon for visibility toggle
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscureConfirmPassword

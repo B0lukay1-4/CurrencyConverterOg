@@ -1,6 +1,7 @@
+// File: lib/user_authentication/login_page.dart
 import 'package:currency_converter/components/simple_button.dart';
 import 'package:currency_converter/components/simple_textfield.dart';
-import 'package:currency_converter/user_authentication/helper/helper_function.dart'; // For displayMessageToUser
+import 'package:currency_converter/user_authentication/helper/helper_function.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -36,9 +37,11 @@ class _LoginPageState extends State<LoginPage> {
         password: _passwordController.text.trim(),
       );
 
-      // Close loading dialog if still mounted
-      if (mounted) Navigator.pop(context);
-      // StreamBuilder elsewhere (e.g., in main.dart) will handle navigation
+      // Close loading dialog and pop LoginPage if still mounted
+      if (mounted) {
+        Navigator.pop(context); // Close loading dialog
+        Navigator.pop(context); // Return to HomePage
+      }
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context); // Close loading dialog
       String errorMessage;
