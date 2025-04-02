@@ -4,6 +4,10 @@
 
 import FlutterMacOS
 import Foundation
+import shared_preferences_foundation
+
+func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
+  SharedPreferencesPlugin.register(with: registry.registrar(forPlugin: "SharedPreferencesPlugin"))
 
 import cloud_firestore
 import firebase_auth
@@ -25,4 +29,5 @@ func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   SharedPreferencesPlugin.register(with: registry.registrar(forPlugin: "SharedPreferencesPlugin"))
   SqflitePlugin.register(with: registry.registrar(forPlugin: "SqflitePlugin"))
   UrlLauncherPlugin.register(with: registry.registrar(forPlugin: "UrlLauncherPlugin"))
+
 }
