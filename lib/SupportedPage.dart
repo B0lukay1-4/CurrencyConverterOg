@@ -231,7 +231,6 @@ class _SupportedPageState extends State<SupportedPage> {
     ),
   ),
 );
-
                     },
                   ),
           ),
