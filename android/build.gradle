@@ -1,3 +1,16 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Use a modern AGP version compatible with Flutter 3.29.2
+        classpath 'com.android.tools.build:gradle:8.2.2' // Updated from 3.29.2
+        classpath 'com.google.gms:google-services:4.4.2' // Latest as of 2025
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22' // Matches Dart 3.7.2
+    }
+}
+
 allprojects {
     repositories {
         google()
@@ -6,9 +19,11 @@ allprojects {
 }
 
 rootProject.buildDir = "../build"
+
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+
 subprojects {
     project.evaluationDependsOn(":app")
 }
