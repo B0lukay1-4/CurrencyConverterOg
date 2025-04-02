@@ -27,7 +27,7 @@ class _CurrencylistState extends State<Currencylist> {
   }
 
   void _onSearchChanged() {
-    setState(() {}); // Ensures UI updates when text changes
+    setState(() {}); 
   }
 
   @override
@@ -37,7 +37,7 @@ class _CurrencylistState extends State<Currencylist> {
       body: Column(
         children: [
           const SizedBox(height: 40),
-          // Search Bar
+         
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Container(
@@ -56,7 +56,7 @@ class _CurrencylistState extends State<Currencylist> {
               ),
             ),
           ),
-          // Tab Selector
+          //Tab Selector
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Container(

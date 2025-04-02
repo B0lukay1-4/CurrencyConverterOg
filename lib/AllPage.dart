@@ -95,7 +95,7 @@ class _AllpageState extends State<Allpage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Base Currency Input Field
+     
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Row(
@@ -137,11 +137,11 @@ class _AllpageState extends State<Allpage> {
             print("");
           },
           style: OutlinedButton.styleFrom(
-            backgroundColor: Colors.grey[300], // Light gray background
-            foregroundColor: Colors.black, // Black text color
-            side: BorderSide(color: Colors.grey[400]!, width: 1.5), // Thin border
+            backgroundColor: Colors.grey[300], 
+            foregroundColor: Colors.black, 
+            side: BorderSide(color: Colors.grey[400]!, width: 1.5), 
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8), // Slightly rounded corners
+              borderRadius: BorderRadius.circular(8), 
             ),
           ),
           child: Text("Remember", style: TextStyle(fontSize: 16)),
@@ -177,15 +177,14 @@ class _AllpageState extends State<Allpage> {
   child: ListTile(
     contentPadding: const EdgeInsets.all(16.0),
 
-    // 👇 Load image from the map
     leading: SizedBox(
       width: 40,
       height: 40,
       child: Image.network(
-        currency_details[abbreviation]?["image"] ?? '', // fallback if key missing
+        currency_details[abbreviation]?["image"] ?? '', 
         fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) {
-          return const Icon(Icons.money); // fallback icon
+          return const Icon(Icons.money); 
         },
       ),
     ),

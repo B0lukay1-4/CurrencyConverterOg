@@ -115,7 +115,7 @@ class _SupportedPageState extends State<SupportedPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Base Currency Input Field
+        
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Row(
@@ -154,7 +154,7 @@ class _SupportedPageState extends State<SupportedPage> {
           ),
         ),
 
-        // Loading Indicator
+      
         if (isLoading)
           const Expanded(child: Center(child: CircularProgressIndicator()))
         else if (hasError)
@@ -181,7 +181,7 @@ class _SupportedPageState extends State<SupportedPage> {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // Left section: Flag + Currency name
+    
         Row(
           children: [
             ClipRRect(
@@ -190,7 +190,7 @@ class _SupportedPageState extends State<SupportedPage> {
                 currency_details[currency.abbreviation]?["image"] ?? '',
                 width: 40,
                 height: 30,
-                fit: BoxFit.contain, // keeps aspect ratio
+                fit: BoxFit.contain, 
                 errorBuilder: (context, error, stackTrace) {
                   return const Icon(Icons.money, size: 30, color: Colors.grey);
                 },
@@ -207,7 +207,6 @@ class _SupportedPageState extends State<SupportedPage> {
           ],
         ),
 
-        // Right section: Symbol + Rate + Abbreviation
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [

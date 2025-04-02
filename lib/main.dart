@@ -13,7 +13,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
       return MaterialApp(
-home:Histroyrateinformation(searchQuery: '',),
+home:Currencylist(),
       debugShowCheckedModeBanner: false,
       );
   }

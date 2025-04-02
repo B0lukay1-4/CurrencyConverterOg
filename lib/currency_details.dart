@@ -27,7 +27,7 @@ final Map<String, Map<String, String>> currency_details = {
   "ANG": {
     "name": "Netherlands Antillean Guilder",
     "symbol": "ƒ",
-    "image": "https://flagcdn.com/w40/nl.png" // Netherlands flag used
+    "image": "https://flagcdn.com/w40/nl.png" 
   },
   "AOA": {
     "name": "Angolan Kwanza",

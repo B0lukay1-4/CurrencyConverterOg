@@ -16,14 +16,14 @@ class Histroyrateinformation extends StatefulWidget {
 
 class _HistroyrateinformationState extends State<Histroyrateinformation> {
   TextEditingController searchController = TextEditingController();
-  TextEditingController yearController = TextEditingController(); // 🔹 New Controller for Year
+  TextEditingController yearController = TextEditingController(); 
   List<Currency_Conversion_rate> currencies = [];
   List<Currency_Conversion_rate> filteredCurrencies = [];
   bool isLoading = true;
   String errorMessage = '';
   TextEditingController currencyController = TextEditingController();
   String baseCurrency = "USD";
-  String selectedYear = "2021"; // Default Year
+ 
 
   @override
   void initState() {
@@ -64,12 +64,12 @@ Future<void> fetchCurrencies() async {
     errorMessage = "";
   });
 
-  const String apiKey = '027450ec162233010fb4df530456226f'; // Replace with your real API key
+  const String apiKey = '027450ec162233010fb4df530456226f'; 
 
-  // 🔹 Use default date if input is empty
+  
   String selectedDate = yearController.text.trim().isEmpty ? "2024-08-17" : yearController.text.trim();
 
-  // 🔹 Validate date format (YYYY-MM-DD)
+
   if (!RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(selectedDate)) {
     setState(() {
       isLoading = false;
@@ -80,11 +80,11 @@ Future<void> fetchCurrencies() async {
 
   String apiUrl = "https://data.fixer.io/api/$selectedDate?access_key=$apiKey"; 
 
-  print("Fetching: $apiUrl"); // 🔵 Debugging: Print the API URL
+  print("Fetching: $apiUrl"); 
 
   try {
     final response = await http.get(Uri.parse(apiUrl));
-    print("API Response: ${response.body}"); // 🔵 Debugging: Print API response
+    print("API Response: ${response.body}"); 
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -99,8 +99,7 @@ Future<void> fetchCurrencies() async {
 
       Map<String, dynamic> rates = data['rates'];
 
-      // 🔹 Convert from EUR to selected base currency
-      double baseRate = rates[baseCurrency] ?? 1.0; // Get base currency rate (or default to 1.0)
+      double baseRate = rates[baseCurrency] ?? 1.0; 
       Map<String, double> convertedRates = rates.map((key, value) => MapEntry(key, value / baseRate));
 
       List<Currency_Conversion_rate> fetchedCurrencies = convertedRates.entries
@@ -152,7 +151,6 @@ Future<void> fetchCurrencies() async {
         children: [
           const SizedBox(height: 40),
 
-          // 🔵 Search Bar
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Container(
@@ -172,7 +170,7 @@ Future<void> fetchCurrencies() async {
             ),
           ),
 
-          // 🔹 Base Currency Input and Year Selector
+       
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
@@ -209,8 +207,7 @@ Future<void> fetchCurrencies() async {
             ),
           ),
 
-          // 🔹 Year Selector Input
- // 🔹 Full Date Input (Year-Month-Day)
+
 Padding(
   padding: const EdgeInsets.all(16.0),
   child: Row(
@@ -225,14 +222,14 @@ Padding(
             borderRadius: BorderRadius.circular(8),
           ),
           child: TextField(
-            controller: yearController, // 🔹 Now expects full date
+            controller: yearController, 
             keyboardType: TextInputType.datetime,
             decoration: const InputDecoration(
               hintText: "Enter date (e.g., 2024-08-17)",
               border: InputBorder.none,
             ),
             onSubmitted: (value) {
-              fetchCurrencies(); // Fetch data when user submits date
+              fetchCurrencies();
             },
           ),
         ),
