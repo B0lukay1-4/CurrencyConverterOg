@@ -1,13 +1,12 @@
 // File: lib/user_authentication/login_page.dart
 import 'package:currency_converter/components/simple_button.dart';
 import 'package:currency_converter/components/simple_textfield.dart';
+import 'package:currency_converter/components/social_login_buttons.dart';
 import 'package:currency_converter/user_authentication/helper/helper_function.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-// Login page for user authentication with email and password
 class LoginPage extends StatefulWidget {
-  // Callback to switch to the register page
   final VoidCallback? onTap;
 
   const LoginPage({super.key, required this.onTap});
@@ -17,33 +16,28 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // Text controllers for email and password input
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  // Attempts to log in the user with Firebase Authentication
   Future<void> _login() async {
-    // Show loading indicator
     showDialog(
       context: context,
-      barrierDismissible: false, // Prevent dismissal during loading
+      barrierDismissible: false,
       builder: (context) => const Center(child: CircularProgressIndicator()),
     );
 
     try {
-      // Sign in with Firebase
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
 
-      // Close loading dialog and pop LoginPage if still mounted
       if (mounted) {
         Navigator.pop(context); // Close loading dialog
         Navigator.pop(context); // Return to HomePage
       }
     } on FirebaseAuthException catch (e) {
-      Navigator.pop(context); // Close loading dialog
+      Navigator.pop(context);
       String errorMessage;
       switch (e.code) {
         case 'user-not-found':
@@ -63,14 +57,13 @@ class _LoginPageState extends State<LoginPage> {
       }
       if (mounted) displayMessageToUser(errorMessage, context);
     } catch (e) {
-      Navigator.pop(context); // Close loading dialog
+      Navigator.pop(context);
       if (mounted) displayMessageToUser('Unexpected error: $e', context);
     }
   }
 
   @override
   void dispose() {
-    // Clean up controllers to prevent memory leaks
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -90,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                 Image.asset(
                   "assets/Currency.png",
                   height: 210,
-                  width: 210, // Added for consistency
+                  width: 210,
                 ),
                 const SizedBox(height: 25),
                 const Text(
@@ -114,7 +107,6 @@ class _LoginPageState extends State<LoginPage> {
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
                     onTap: () {
-                      // TODO: Implement forgot password logic
                       displayMessageToUser(
                           'Forgot Password feature coming soon!', context);
                     },
@@ -131,6 +123,12 @@ class _LoginPageState extends State<LoginPage> {
                   text: "Login",
                   onTap: _login,
                   color: Colors.blue,
+                ),
+                const SizedBox(height: 10),
+                SocialLoginButtons(
+                  onSuccess: () {
+                    Navigator.pop(context); // Return to HomePage
+                  },
                 ),
                 const SizedBox(height: 10),
                 Row(

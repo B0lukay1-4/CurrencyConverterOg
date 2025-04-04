@@ -1,51 +1,45 @@
-
-import 'package:currency_converter/CurrencyList.dart';
-import 'package:currency_converter/HistroyRateInformation.dart';
-
-// File: lib/main.dart
+import 'package:currency_converter/RateAlerts/firebase_api.dart';
 import 'package:currency_converter/firebase_options.dart';
-import 'package:currency_converter/firebase_services/firebase_api.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'dart:developer' as developer;
 import 'package:currency_converter/components/home_page.dart';
 import 'package:currency_converter/Api_call/news_provider.dart';
 
-
-
-void main() {
-  runApp(const MainApp());
-
 // Entry point of the Currency Converter app
-void main() async {
+Future main() async {
   // Ensure Flutter bindings are initialized before Firebase
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Load .env
+  await dotenv.load(fileName: ".env").catchError((e) {
+    developer.log("Error loading .env: $e", name: 'Main');
+    return null;
+  });
+  developer.log("Environment variables loaded: ${dotenv.env['API_KEY']}",
+      name: 'Main');
+
+  // Initialize Firebase
   bool firebaseInitialized = false;
-
   try {
-    // Initialize Firebase with platform-specific options
     await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+        options: DefaultFirebaseOptions.currentPlatform);
     developer.log('Firebase initialized successfully', name: 'Main');
-
-    // Initialize Firebase Cloud Messaging notifications
-    final firebaseApi = FirebaseApi();
-    await firebaseApi.initNotifications();
     firebaseInitialized = true;
+
+    // Start Firebase Messaging in the background
+    final firebaseApi = FirebaseApi();
+    firebaseApi.initNotifications(); // Non-blocking
   } catch (e) {
-    // Log initialization errors for debugging
-    developer.log('Error during app initialization: $e', name: 'Main');
+    developer.log('Firebase init error: $e', name: 'Main');
   }
 
-  // Launch the app with initialization status
   runApp(MainApp(firebaseInitialized: firebaseInitialized));
-
 }
 
-// Root widget of the application, handling providers
 class MainApp extends StatelessWidget {
   final bool firebaseInitialized;
 
@@ -53,28 +47,55 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     if (!firebaseInitialized) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          body: Center(
-            child: Text('Failed to initialize app. Please restart.'),
-          ),
-        ),
+            body: Center(
+                child: Text('Failed to initialize app. Please restart.'))),
       );
     }
 
     return MultiProvider(
       providers: [
-        // Provide NewsProvider for news data management
-        ChangeNotifierProvider(create: (context) => NewsProvider()),
+        ChangeNotifierProvider(create: (_) => NewsProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: const HomePage(), // Always start with HomePage
+        home: SplashScreen(),
       ),
     );
+  }
+}
 
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _navigateToHome();
+  }
+
+  Future<void> _navigateToHome() async {
+    await Future.delayed(Duration(seconds: 2)); // Give initialization time
+    if (mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => HomePage()),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(child: CircularProgressIndicator()),
+    );
   }
 }

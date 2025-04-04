@@ -1,13 +1,12 @@
 // File: lib/user_authentication/register_page.dart
 import 'package:currency_converter/components/simple_button.dart';
 import 'package:currency_converter/components/simple_textfield.dart';
+import 'package:currency_converter/components/social_login_buttons.dart';
 import 'package:currency_converter/user_authentication/helper/helper_function.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-// Registration page for creating a new user account
 class RegisterPage extends StatefulWidget {
-  // Callback to switch to the login page
   final VoidCallback? onTap;
 
   const RegisterPage({super.key, required this.onTap});
@@ -17,19 +16,15 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  // Text controllers for user input
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPwController = TextEditingController();
 
-  // State for password visibility
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
-  // Registers a new user with Firebase Authentication
   Future<void> _registerUser() async {
-    // Basic form validation
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
     final username = _usernameController.text.trim();
@@ -43,43 +38,37 @@ class _RegisterPageState extends State<RegisterPage> {
       return;
     }
 
-    // Username length check
     if (username.length < 3) {
       displayMessageToUser('Username must be at least 3 characters.', context);
       return;
     }
 
-    // Password match validation
     if (password != confirmPassword) {
       displayMessageToUser("Passwords don't match", context);
       return;
     }
 
-    // Show loading indicator
     showDialog(
       context: context,
-      barrierDismissible: false, // Prevent dismissal during loading
+      barrierDismissible: false,
       builder: (context) => const Center(child: CircularProgressIndicator()),
     );
 
     try {
-      // Create user with email and password
       UserCredential userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      // Update display name with username
       await userCredential.user!.updateDisplayName(username);
 
-      // Close loading dialog and pop back to HomePage if still mounted
       if (mounted) {
         Navigator.pop(context); // Close loading dialog
         Navigator.pop(context); // Return to HomePage
       }
     } on FirebaseAuthException catch (e) {
-      Navigator.pop(context); // Close loading dialog
+      Navigator.pop(context);
       String errorMessage;
       switch (e.code) {
         case 'weak-password':
@@ -96,14 +85,13 @@ class _RegisterPageState extends State<RegisterPage> {
       }
       if (mounted) displayMessageToUser(errorMessage, context);
     } catch (e) {
-      Navigator.pop(context); // Close loading dialog
+      Navigator.pop(context);
       if (mounted) displayMessageToUser('Unexpected error: $e', context);
     }
   }
 
   @override
   void dispose() {
-    // Clean up controllers to prevent memory leaks
     _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
@@ -185,7 +173,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
                     onTap: () {
-                      // TODO: Implement forgot password logic (post-registration)
                       displayMessageToUser(
                           'Forgot Password feature coming soon!', context);
                     },
@@ -202,6 +189,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   text: "Register",
                   onTap: _registerUser,
                   color: Colors.blue,
+                ),
+                const SizedBox(height: 10),
+                SocialLoginButtons(
+                  onSuccess: () {
+                    Navigator.pop(context); // Return to HomePage
+                  },
                 ),
                 const SizedBox(height: 10),
                 Row(

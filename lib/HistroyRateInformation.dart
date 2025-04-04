@@ -16,14 +16,13 @@ class Histroyrateinformation extends StatefulWidget {
 
 class _HistroyrateinformationState extends State<Histroyrateinformation> {
   TextEditingController searchController = TextEditingController();
-  TextEditingController yearController = TextEditingController(); 
+  TextEditingController yearController = TextEditingController();
   List<Currency_Conversion_rate> currencies = [];
   List<Currency_Conversion_rate> filteredCurrencies = [];
   bool isLoading = true;
   String errorMessage = '';
   TextEditingController currencyController = TextEditingController();
   String baseCurrency = "USD";
- 
 
   @override
   void initState() {
@@ -58,76 +57,75 @@ class _HistroyrateinformationState extends State<Histroyrateinformation> {
     await prefs.setString('base_currency', currency);
   }
 
-Future<void> fetchCurrencies() async {  
-  setState(() {
-    isLoading = true;
-    errorMessage = "";
-  });
-
-  const String apiKey = '027450ec162233010fb4df530456226f'; 
-
-  
-  String selectedDate = yearController.text.trim().isEmpty ? "2024-08-17" : yearController.text.trim();
-
-
-  if (!RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(selectedDate)) {
+  Future<void> fetchCurrencies() async {
     setState(() {
-      isLoading = false;
-      errorMessage = "Invalid date format. Use YYYY-MM-DD (e.g., 2024-08-17)";
+      isLoading = true;
+      errorMessage = "";
     });
-    return;
-  }
 
-  String apiUrl = "https://data.fixer.io/api/$selectedDate?access_key=$apiKey"; 
+    const String apiKey = '027450ec162233010fb4df530456226f';
 
-  print("Fetching: $apiUrl"); 
+    String selectedDate = yearController.text.trim().isEmpty
+        ? "2024-08-17"
+        : yearController.text.trim();
 
-  try {
-    final response = await http.get(Uri.parse(apiUrl));
-    print("API Response: ${response.body}"); 
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-
-      if (data['success'] == false) { 
-        throw Exception("API Error: ${data['error']['info']}");
-      }
-
-      if (data['rates'] == null || data['rates'].isEmpty) {
-        throw Exception("No exchange rates found for $selectedDate.");
-      }
-
-      Map<String, dynamic> rates = data['rates'];
-
-      double baseRate = rates[baseCurrency] ?? 1.0; 
-      Map<String, double> convertedRates = rates.map((key, value) => MapEntry(key, value / baseRate));
-
-      List<Currency_Conversion_rate> fetchedCurrencies = convertedRates.entries
-          .map((entry) => Currency_Conversion_rate(
-                abbreviation: entry.key,
-                rate: entry.value,
-              ))
-          .toList();
-
+    if (!RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(selectedDate)) {
       setState(() {
-        currencies = fetchedCurrencies;
         isLoading = false;
-        _filterCurrencies();
+        errorMessage = "Invalid date format. Use YYYY-MM-DD (e.g., 2024-08-17)";
       });
-    } else {
-      throw Exception("Failed to load data (HTTP ${response.statusCode})");
+      return;
     }
-  } catch (error) {
-    setState(() {
-      isLoading = false;
-      errorMessage = "Error fetching currencies: ${error.toString()}";
-    });
+
+    String apiUrl =
+        "https://data.fixer.io/api/$selectedDate?access_key=$apiKey";
+
+    print("Fetching: $apiUrl");
+
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+      print("API Response: ${response.body}");
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        if (data['success'] == false) {
+          throw Exception("API Error: ${data['error']['info']}");
+        }
+
+        if (data['rates'] == null || data['rates'].isEmpty) {
+          throw Exception("No exchange rates found for $selectedDate.");
+        }
+
+        Map<String, dynamic> rates = data['rates'];
+
+        double baseRate = rates[baseCurrency] ?? 1.0;
+        Map<String, double> convertedRates =
+            rates.map((key, value) => MapEntry(key, value / baseRate));
+
+        List<Currency_Conversion_rate> fetchedCurrencies =
+            convertedRates.entries
+                .map((entry) => Currency_Conversion_rate(
+                      abbreviation: entry.key,
+                      rate: entry.value,
+                    ))
+                .toList();
+
+        setState(() {
+          currencies = fetchedCurrencies;
+          isLoading = false;
+          _filterCurrencies();
+        });
+      } else {
+        throw Exception("Failed to load data (HTTP ${response.statusCode})");
+      }
+    } catch (error) {
+      setState(() {
+        isLoading = false;
+        errorMessage = "Error fetching currencies: ${error.toString()}";
+      });
+    }
   }
-}
-
-
-
-
 
   void _filterCurrencies() {
     String query = searchController.text.toLowerCase();
@@ -136,8 +134,9 @@ Future<void> fetchCurrencies() async {
           ? List.from(currencies)
           : currencies.where((currency) {
               String abbreviation = currency.abbreviation.toLowerCase();
-              String name =
-                  currency_details[currency.abbreviation]?["name"]?.toLowerCase() ?? "";
+              String name = currency_details[currency.abbreviation]?["name"]
+                      ?.toLowerCase() ??
+                  "";
               return abbreviation.contains(query) || name.contains(query);
             }).toList();
     });
@@ -150,7 +149,6 @@ Future<void> fetchCurrencies() async {
       body: Column(
         children: [
           const SizedBox(height: 40),
-
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Container(
@@ -164,18 +162,18 @@ Future<void> fetchCurrencies() async {
                   hintText: "Search...",
                   prefixIcon: Icon(Icons.search, color: Colors.grey),
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 ),
               ),
             ),
           ),
-
-       
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
               children: [
-                const Text("Base Currency:", style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text("Base Currency:",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Container(
@@ -206,46 +204,46 @@ Future<void> fetchCurrencies() async {
               ],
             ),
           ),
-
-
-Padding(
-  padding: const EdgeInsets.all(16.0),
-  child: Row(
-    children: [
-      const Text("Date (YYYY-MM-DD):", style: TextStyle(fontWeight: FontWeight.bold)),
-      const SizedBox(width: 10),
-      Expanded(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: TextField(
-            controller: yearController, 
-            keyboardType: TextInputType.datetime,
-            decoration: const InputDecoration(
-              hintText: "Enter date (e.g., 2024-08-17)",
-              border: InputBorder.none,
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                const Text("Date (YYYY-MM-DD):",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: TextField(
+                      controller: yearController,
+                      keyboardType: TextInputType.datetime,
+                      decoration: const InputDecoration(
+                        hintText: "Enter date (e.g., 2024-08-17)",
+                        border: InputBorder.none,
+                      ),
+                      onSubmitted: (value) {
+                        fetchCurrencies();
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
-            onSubmitted: (value) {
-              fetchCurrencies();
-            },
           ),
-        ),
-      ),
-    ],
-  ),
-),
-
-
           isLoading
               ? const Center(child: CircularProgressIndicator())
               : errorMessage.isNotEmpty
-                  ? Center(child: Text(errorMessage, style: TextStyle(color: Colors.red)))
+                  ? Center(
+                      child: Text(errorMessage,
+                          style: TextStyle(color: Colors.red)))
                   : Expanded(
                       child: filteredCurrencies.isEmpty
-                          ? const Center(child: Text("No matching currencies found"))
+                          ? const Center(
+                              child: Text("No matching currencies found"))
                           : ListView.builder(
                               itemCount: filteredCurrencies.length,
                               itemBuilder: (context, index) {
@@ -253,13 +251,16 @@ Padding(
                                 String abbreviation = currency.abbreviation;
                                 double rate = currency.rate;
 
-                                String name =
-                                    currency_details[abbreviation]?["name"] ?? abbreviation;
-                                String symbol =
-                                    currency_details[abbreviation]?["symbol"] ?? "";
+                                String name = currency_details[abbreviation]
+                                        ?["name"] ??
+                                    abbreviation;
+                                String symbol = currency_details[abbreviation]
+                                        ?["symbol"] ??
+                                    "";
 
                                 return Card(
-                                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical: 8, horizontal: 16),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
@@ -271,21 +272,34 @@ Padding(
                                       width: 40,
                                       height: 40,
                                       child: Image.network(
-                                        currency_details[abbreviation]?["image"] ?? '',
+                                        currency_details[abbreviation]
+                                                ?["image"] ??
+                                            '',
                                         fit: BoxFit.cover,
-                                        errorBuilder: (context, error, stackTrace) {
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
                                           return const Icon(Icons.money);
                                         },
                                       ),
                                     ),
-                                    title: Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                                    title: Text(name,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold)),
                                     trailing: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       children: [
-                                        Text('$symbol ${rate.toStringAsFixed(2)}',
-                                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                                        Text(abbreviation, style: const TextStyle(fontSize: 14, color: Colors.grey)),
+                                        Text(
+                                            '$symbol ${rate.toStringAsFixed(2)}',
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold)),
+                                        Text(abbreviation,
+                                            style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.grey)),
                                       ],
                                     ),
                                   ),
