@@ -19,7 +19,7 @@ class ApiClient {
       }
 
       List<String> currencies = conversionRates.keys.toList();
-      print(currencies);
+  
       return currencies;
     } else {
       throw Exception("Failed to connect to API");

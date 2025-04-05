@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "859088791503",
+    "firebase_url": "https://currency-conversion-hist-d28e7-default-rtdb.firebaseio.com",
+    "project_id": "currency-conversion-hist-d28e7",
+    "storage_bucket": "currency-conversion-hist-d28e7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:859088791503:android:ffe44eec866e46aa6b14ba",
+        "android_client_info": {
+          "package_name": "com.example.currency_converter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe6MnJ4dT-qTFKdQ3lizk0Y0qMq1CuM2A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
