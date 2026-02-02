@@ -193,24 +193,7 @@ Future<void> _saveBaseCurrency(String currency) async {
              
                   Padding(
   padding: const EdgeInsets.only(left: 20),
-  child: OutlinedButton(
-  onPressed: () {
-    String inputCurrency = currencyController.text.trim().toUpperCase();
-    if (inputCurrency.isNotEmpty) {
-      _saveBaseCurrency(inputCurrency);
-      print("Saved $inputCurrency to file");
-    }
-  },
-  style: OutlinedButton.styleFrom(
-    backgroundColor: Colors.white,
-    foregroundColor: Colors.black,
-    side: const BorderSide(color: Colors.white, width: 1.5),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(8),
-    ),
-  ),
-  child: const Text("Remember", style: TextStyle(fontSize: 16)),
-),
+  
 
 
 ),
