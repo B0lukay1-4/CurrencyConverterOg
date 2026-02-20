@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'currency_conversion_rate.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'currency_details.dart'; 
+import 'currency_details.dart';
 
 class Allpage extends StatefulWidget {
   final String searchQuery;
@@ -52,14 +52,17 @@ class _AllpageState extends State<Allpage> {
 
   Future<void> fetchCurrencies() async {
     try {
-      final response = await http.get(Uri.parse('https://api.exchangerate-api.com/v4/latest/$baseCurrency'));
+      final response = await http.get(Uri.parse(
+          'https://api.exchangerate-api.com/v4/latest/$baseCurrency'));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         Map<String, dynamic> rates = data['rates'];
 
-        List<Currency_Conversion_rate> fetchedCurrencies = rates.entries.map((entry) {
-          return Currency_Conversion_rate(abbreviation: entry.key, rate: entry.value.toDouble());
+        List<Currency_Conversion_rate> fetchedCurrencies =
+            rates.entries.map((entry) {
+          return Currency_Conversion_rate(
+              abbreviation: entry.key, rate: entry.value.toDouble());
         }).toList();
 
         setState(() {
@@ -85,7 +88,9 @@ class _AllpageState extends State<Allpage> {
           ? List.from(currencies)
           : currencies.where((currency) {
               String abbreviation = currency.abbreviation.toLowerCase();
-              String name = currency_details[currency.abbreviation]?["name"]?.toLowerCase() ?? "";
+              String name = currency_details[currency.abbreviation]?["name"]
+                      ?.toLowerCase() ??
+                  "";
               return abbreviation.contains(query) || name.contains(query);
             }).toList();
     });
@@ -95,14 +100,13 @@ class _AllpageState extends State<Allpage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-     
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Row(
             children: [
-              const Text("Base Currency:", style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text("Base Currency:",
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(width: 10),
-              
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -129,33 +133,37 @@ class _AllpageState extends State<Allpage> {
                     },
                   ),
                 ),
-                
               ),
-              SizedBox(width: 9,),
+              SizedBox(
+                width: 9,
+              ),
               OutlinedButton(
-          onPressed: () {
-            print("");
-          },
-          style: OutlinedButton.styleFrom(
-            backgroundColor: Colors.grey[300], 
-            foregroundColor: Colors.black, 
-            side: BorderSide(color: Colors.grey[400]!, width: 1.5), 
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8), 
-            ),
-          ),
-          child: Text("Remember", style: TextStyle(fontSize: 16)),
+                onPressed: () {
+                  print("");
+                },
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: Colors.grey[300],
+                  foregroundColor: Colors.black,
+                  side: BorderSide(color: Colors.grey[400]!, width: 1.5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
+                child: Text("Remember", style: TextStyle(fontSize: 16)),
+              ),
             ],
           ),
         ),
         isLoading
             ? const Center(child: CircularProgressIndicator())
             : errorMessage.isNotEmpty
-                ? Center(child: Text(errorMessage, style: TextStyle(color: Colors.red)))
+                ? Center(
+                    child:
+                        Text(errorMessage, style: TextStyle(color: Colors.red)))
                 : Expanded(
                     child: filteredCurrencies.isEmpty
-                        ? const Center(child: Text("No matching currencies found"))
+                        ? const Center(
+                            child: Text("No matching currencies found"))
                         : ListView.builder(
                             itemCount: filteredCurrencies.length,
                             itemBuilder: (context, index) {
@@ -164,53 +172,61 @@ class _AllpageState extends State<Allpage> {
                               double rate = currency.rate;
 
                               // Fetch name & symbol from external map
-                              String name = currency_details[abbreviation]?["name"] ?? abbreviation;
-                              String symbol = currency_details[abbreviation]?["symbol"] ?? "";
+                              String name = currency_details[abbreviation]
+                                      ?["name"] ??
+                                  abbreviation;
+                              String symbol = currency_details[abbreviation]
+                                      ?["symbol"] ??
+                                  "";
 
-                             return Card(
-  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(12),
-  ),
-  color: const Color.fromARGB(255, 255, 255, 255),
-  elevation: 3,
-  child: ListTile(
-    contentPadding: const EdgeInsets.all(16.0),
-
-    leading: SizedBox(
-      width: 40,
-      height: 40,
-      child: Image.network(
-        currency_details[abbreviation]?["image"] ?? '', 
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) {
-          return const Icon(Icons.money); 
-        },
-      ),
-    ),
-
-    title: Text(
-      name.isNotEmpty ? name : abbreviation,
-      style: const TextStyle(fontWeight: FontWeight.bold),
-    ),
-
-    trailing: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Text(
-          '$symbol ${rate.toStringAsFixed(2)}',
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          abbreviation,
-          style: const TextStyle(fontSize: 14, color: Colors.grey),
-        ),
-      ],
-    ),
-  ),
-);
-
+                              return Card(
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                color: const Color.fromARGB(255, 255, 255, 255),
+                                elevation: 3,
+                                child: ListTile(
+                                  contentPadding: const EdgeInsets.all(16.0),
+                                  leading: SizedBox(
+                                    width: 40,
+                                    height: 40,
+                                    child: Image.network(
+                                      currency_details[abbreviation]
+                                              ?["image"] ??
+                                          '',
+                                      fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return const Icon(Icons.money);
+                                      },
+                                    ),
+                                  ),
+                                  title: Text(
+                                    name.isNotEmpty ? name : abbreviation,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  trailing: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        '$symbol ${rate.toStringAsFixed(2)}',
+                                        style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        abbreviation,
+                                        style: const TextStyle(
+                                            fontSize: 14, color: Colors.grey),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
                             },
                           ),
                   ),

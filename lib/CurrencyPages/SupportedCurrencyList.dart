@@ -119,7 +119,10 @@ class _SupportedPageState extends State<SupportedPage> {
           child: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFF1531A8), Color(0xFF1E4AFF)],
+              colors: [
+                  Color.fromARGB(255, 156, 17, 172), // Deep plum (dark end)
+                  Color(0xFF8E4585), // Medium-dark plum (light-ish end)
+                ],  
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),

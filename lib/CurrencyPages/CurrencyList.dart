@@ -1,4 +1,4 @@
-import 'package:currency_converter/CurrencyPages/AllCurrencyList.dart'; 
+import 'package:currency_converter/CurrencyPages/AllCurrencyList.dart';
 import 'package:currency_converter/CurrencyPages/SupportedCurrencyList.dart';
 import 'package:flutter/material.dart';
 
@@ -38,11 +38,14 @@ class _CurrencylistState extends State<Currencylist> {
         children: [
           // Gradient Header (NO BOTTOM RADIUS)
           Padding(
-             padding: const EdgeInsets.only(left: 5,right: 5),
+            padding: const EdgeInsets.only(left: 5, right: 5),
             child: Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Color(0xFF1E4AFF), Color(0xFF1531A8)],
+                  colors: [
+                    Color(0xFF8E4585), // Medium-dark plum (light-ish end)
+                    Color.fromARGB(255, 156, 17, 172), // Deep plum (dark end)
+                  ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),
@@ -56,42 +59,49 @@ class _CurrencylistState extends State<Currencylist> {
                   const SizedBox(height: 40),
                   // Search Bar
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 10),
                     child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(30),
-              boxShadow: [
-                BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2))
-              ],
-            ),
-            child: TextField(
-              controller: searchController,
-              decoration: const InputDecoration(
-                hintText: "Search...",
-                prefixIcon: Icon(Icons.search, color: Colors.grey),
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              ),
-            ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 4,
+                              offset: Offset(0, 2))
+                        ],
+                      ),
+                      child: TextField(
+                        controller: searchController,
+                        decoration: const InputDecoration(
+                          hintText: "Search...",
+                          prefixIcon: Icon(Icons.search, color: Colors.grey),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 16),
+                        ),
+                      ),
                     ),
                   ),
                   // Toggle Buttons
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Container(
-            height: 50,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(25),
-              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],
-            ),
-            child: Row(
-              children: [
-                _buildTab("All", isAllSelected, true),
-                _buildTab("Supported", !isAllSelected, false),
-              ],
-            ),
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(25),
+                        boxShadow: [
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          _buildTab("All", isAllSelected, true),
+                          _buildTab("Supported", !isAllSelected, false),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -130,7 +140,10 @@ class _CurrencylistState extends State<Currencylist> {
           decoration: BoxDecoration(
             gradient: isSelected
                 ? LinearGradient(
-                    colors: [Color(0xFF1E4AFF), Color(0xFF1531A8)],
+                    colors: [
+  Color.fromARGB(255, 198, 67, 183),  // Medium-dark plum (light-ish end)
+  Color.fromARGB(255, 156, 17, 172),  // Deep plum (dark end)
+],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   )
@@ -138,7 +151,12 @@ class _CurrencylistState extends State<Currencylist> {
             color: isSelected ? Colors.blue : Colors.transparent,
             borderRadius: BorderRadius.circular(25),
             boxShadow: isSelected
-                ? [BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2))]
+                ? [
+                    BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 4,
+                        offset: Offset(0, 2))
+                  ]
                 : [],
           ),
           child: Center(
