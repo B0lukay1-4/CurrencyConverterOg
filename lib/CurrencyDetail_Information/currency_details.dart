@@ -223,7 +223,7 @@ final Map<String, Map<String, String>> currency_details = {
 "EUR": {
   "name": "Euro",
   "symbol": "€",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Euro_symbol_black.svg/1024px-Euro_symbol_black.svg.png"
+  "image": "https://flagcdn.com/w320/eu.png"
 },
 "FJD": {
   "name": "Fijian Dollar",

@@ -28,8 +28,8 @@ class _SplashscreenState extends State<Splashscreen> {
         child: Column(
           children: [
          Padding(
-           padding: const EdgeInsets.only(top: 230),
-           child: Image.asset("assets/images/swiftex.png",width: 400, height:500),
+           padding: const EdgeInsets.only(top: 200),
+           child: Image.asset("assets/images/currenseelogo.png",width: 400, height:500),
          )
           ],
         ),
