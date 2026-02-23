@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'CurrencyDetail_Information/currency_conversion_rate.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'CurrencyDetail_Information/currency_details.dart';
+
 
 class Allpage extends StatefulWidget {
   final String searchQuery;
@@ -98,6 +100,7 @@ class _AllpageState extends State<Allpage> {
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
         child: Padding(
             padding: const EdgeInsets.only(top: 10),
@@ -134,6 +137,7 @@ class _AllpageState extends State<Allpage> {
                                 _saveBaseCurrency(newBaseCurrency);
                                 fetchCurrencies();
                               }
+
                             },
                           ),
                         ),

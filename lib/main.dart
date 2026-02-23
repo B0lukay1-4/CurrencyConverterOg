@@ -1,14 +1,17 @@
+
 import 'package:flutter/material.dart';
 import 'package:currency_converter/SplashScreen/SplashScreen.dart';
 
 void main() {
   runApp(const MainApp());
+
 }
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   @override
+
   Widget build(BuildContext context) { 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -20,6 +23,8 @@ class MainApp extends StatelessWidget {
 
       // Your normal app flow
       home: const Splashscreen(),
-    );
+
+  
+     );
   }
 }

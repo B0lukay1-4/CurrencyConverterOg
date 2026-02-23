@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
-	<string>????</string>
+	<string>SIGN</string> <!-- Replace ???? with a valid code or remove if Flutter handles it -->
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -45,5 +45,41 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<!-- URL Schemes for Twitter and Facebook -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<!-- Twitter URL Scheme -->
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>twitterkit-X2PZrL5X3yHlBAcT4BEajCCPp</string> <!-- Replace with your Twitter Consumer Key -->
+			</array>
+		</dict>
+		<!-- Facebook URL Scheme -->
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb1383971289718710</string> <!-- Replace YOUR_FACEBOOK_APP_ID with actual ID -->
+			</array>
+		</dict>
+	</array>
+
+	<!-- Facebook-specific Keys --> 
+	<key>FacebookAppID</key>
+	<string>1383971289718710</string> <!-- Replace with your actual Facebook App ID -->
+	<key>FacebookDisplayName</key>
+	<string>Currency Converter</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 </dict>
 </plist>
