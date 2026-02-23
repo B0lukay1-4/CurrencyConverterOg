@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'currency_conversion_rate.dart';
+import 'CurrencyDetail_Information/currency_conversion_rate.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'currency_details.dart';
+// import 'currency_details.dart';
+import 'CurrencyDetail_Information/currency_details.dart';
 
 class Histroyrateinformation extends StatefulWidget {
   final String searchQuery;
