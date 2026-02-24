@@ -29,7 +29,7 @@ class _SplashscreenState extends State<Splashscreen> {
           children: [
          Padding(
            padding: const EdgeInsets.only(top: 200),
-           child: Image.asset("assets/images/currenseelogo.png",width: 400, height:500),
+           child: Image.asset("assets/images/currencyexlogo.png",width: 400, height:500),
          )
           ],
         ),

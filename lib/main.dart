@@ -1,10 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:currency_converter/SplashScreen/SplashScreen.dart';
 
 void main() {
   runApp(const MainApp());
-
 }
 
 class MainApp extends StatelessWidget {
@@ -21,7 +19,6 @@ class MainApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.grey[100],
       ),
 
-      // Your normal app flow
       home: const Splashscreen(),
 
   
